@@ -1,0 +1,49 @@
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
+group 'org.qatools'
+version '1.0.0'
+
+apply plugin: 'java'
+apply plugin: 'java-library'
+apply plugin: 'maven-publish'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+    maven { url 'https://dl.bintray.com/mbarvinskyi/qatools' }
+}
+
+publishing {
+    publications {
+        RpClientPublication(MavenPublication) {
+            from components.java
+            groupId group
+            artifactId project.name
+            version '1.0.0'
+        }
+    }
+}
+
+bintray {
+    user = project.hasProperty('user') ? project.property('user') : ''
+    key = project.hasProperty('key') ? project.property('key') : ''
+    publications = ['RpClientPublication']
+    pkg {
+        repo = 'qatools'
+        name = project.name
+        version {
+            name = '1.0.0'
+            desc = 'Report Portal logger Logback 1.0.0'
+            released  = new Date()
+            vcsTag = 'v1.0.0'
+        }
+    }
+}
+
+dependencies {
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+    compile 'org.qatools:report-portal-client:1.1.2'
+}
