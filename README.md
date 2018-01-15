@@ -1,0 +1,1 @@
+# report-portal-logger-logback
