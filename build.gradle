@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'org.qatools'
-version '1.0.0'
+version releaseVersion
 
 apply plugin: 'java'
 apply plugin: 'java-library'
@@ -22,7 +22,7 @@ publishing {
             from components.java
             groupId group
             artifactId project.name
-            version '1.0.0'
+            version releaseVersion
         }
     }
 }
@@ -35,15 +35,15 @@ bintray {
         repo = 'qatools'
         name = project.name
         version {
-            name = '1.0.0'
-            desc = 'Report Portal logger Logback 1.0.0'
+            name = releaseVersion
+            desc = 'Report Portal logger Logback '.concat(releaseVersion)
             released  = new Date()
-            vcsTag = 'v1.0.0'
+            vcsTag = 'v'.concat(releaseVersion)
         }
     }
 }
 
 dependencies {
     compile 'ch.qos.logback:logback-classic:1.2.3'
-    compile 'org.qatools:report-portal-client:1.1.2'
+    compile 'org.qatools:report-portal-client:1.1.3'
 }
