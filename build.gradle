@@ -5,7 +5,6 @@ plugins {
 group 'org.qatools'
 version releaseVersion
 
-apply plugin: 'java'
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 
@@ -44,6 +43,7 @@ bintray {
 }
 
 dependencies {
-    compile 'ch.qos.logback:logback-classic:1.2.3'
-    compile 'org.qatools:report-portal-client:1.1.4'
+    api 'com.epam.reportportal:commons-model:4.0.4'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    implementation 'org.qatools:report-portal-client:4.0.4'
 }
