@@ -1,26 +1,24 @@
 /*
- *     Report Portal Logger Logback
- *     Copyright (C) 2018  Maksym Barvinskyi <maksym@mbarvinskyi.com>
+ *    Copyright 2019 Maksym Barvinskyi <maksym@mbarvinskyi.com>
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ *        http://www.apache.org/licenses/LICENSE-2.0
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 package org.qatools.rp.logback;
 
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
-import com.epam.ta.reportportal.ws.model.log.SaveLogRQ;
+import org.qatools.rp.dto.generated.SaveLogRQ;
 import org.qatools.rp.ReportPortalClient;
 import org.qatools.rp.message.HashMarkSeparatedMessageParser;
 import org.qatools.rp.message.MessageParser;
@@ -43,9 +41,9 @@ public class ReportPortalAppender extends AppenderBase<ILoggingEvent> {
             final Date time = new Date(event.getTimeStamp());
 
             SaveLogRQ rq = new SaveLogRQ();
-            rq.setLevel(level);
-            rq.setLogTime(time);
-            rq.setTestItemId(itemId);
+            rq.setLevel(SaveLogRQ.LevelEnum.fromValue(level));
+            rq.setTime(time);
+            rq.setItemId(itemId);
 
             try {
                 if (MESSAGE_PARSER.supports(message)) {

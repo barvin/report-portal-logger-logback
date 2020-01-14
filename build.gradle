@@ -1,5 +1,5 @@
 plugins {
-    id "com.jfrog.bintray" version "1.7.3"
+    id "com.jfrog.bintray" version "1.8.4"
 }
 
 group 'org.qatools'
@@ -12,7 +12,6 @@ sourceCompatibility = 1.8
 
 repositories {
     jcenter()
-    maven { url 'https://dl.bintray.com/mbarvinskyi/qatools' }
 }
 
 publishing {
@@ -37,13 +36,14 @@ bintray {
             name = releaseVersion
             desc = 'Report Portal logger Logback '.concat(releaseVersion)
             released  = new Date()
+            licenses = ['Apache-2.0']
             vcsTag = 'v'.concat(releaseVersion)
         }
     }
 }
 
 dependencies {
-    api 'com.epam.reportportal:commons-model:4.0.4'
     implementation 'ch.qos.logback:logback-classic:1.2.3'
-    implementation 'org.qatools:report-portal-client:4.0.4'
+    implementation 'org.qatools:report-portal-client:4.0.5'
+    implementation 'com.google.guava:guava:23.0'
 }
