@@ -14,13 +14,63 @@ repositories {
     jcenter()
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+    archiveClassifier.set('sources')
+    from sourceSets.main.allSource
+}
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier.set('javadoc')
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "mbarvinskyi"
+            name "Maksym Barvinskyi"
+            email "maksym@mbarvinskyi.com"
+        }
+    }
+
+    scm {
+        url "https://github.com/barvin/report-portal-logger-logback"
+    }
+}
+
 publishing {
     publications {
         RpClientPublication(MavenPublication) {
             from components.java
-            groupId group
+            artifact sourcesJar {
+                archiveClassifier.set("sources")
+            }
+            artifact javadocJar {
+                archiveClassifier.set("javadoc")
+            }
+            groupId "io.github.barvin"
             artifactId project.name
             version releaseVersion
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'Report Portal logger Logback')
+                root.appendNode('name', rootProject.name)
+                root.appendNode('url', 'https://github.com/barvin/report-portal-logger-logback')
+                root.children().last() + pomConfig
+            }
         }
     }
 }
@@ -29,21 +79,34 @@ bintray {
     user = project.hasProperty('user') ? project.property('user') : ''
     key = project.hasProperty('key') ? project.property('key') : ''
     publications = ['RpClientPublication']
+    publish = true
+    override = true
     pkg {
         repo = 'qatools'
         name = project.name
+        websiteUrl = 'https://github.com/barvin/report-portal-logger-logback'
+        issueTrackerUrl = 'https://github.com/barvin/report-portal-logger-logback/issues'
         version {
             name = releaseVersion
             desc = 'Report Portal logger Logback '.concat(releaseVersion)
             released  = new Date()
             licenses = ['Apache-2.0']
             vcsTag = 'v'.concat(releaseVersion)
+            gpg {
+                sign = true
+            }
+            mavenCentralSync {
+                sync = true
+                user = project.hasProperty('sonatype.token') ? project.property('sonatype.token') : ''
+                password = project.hasProperty('sonatype.password') ? project.property('sonatype.password') : ''
+                close = '1'
+            }
         }
     }
 }
 
 dependencies {
     implementation 'ch.qos.logback:logback-classic:1.2.3'
-    implementation 'org.qatools:report-portal-client:4.0.5'
+    implementation 'io.github.barvin:report-portal-client:4.0.5'
     implementation 'com.google.guava:guava:23.0'
 }
