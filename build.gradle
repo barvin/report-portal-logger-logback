@@ -2,7 +2,7 @@ plugins {
     id "com.jfrog.bintray" version "1.8.4"
 }
 
-group 'org.qatools'
+group 'io.github.barvin'
 version releaseVersion
 
 apply plugin: 'java-library'
@@ -61,7 +61,7 @@ publishing {
             artifact javadocJar {
                 archiveClassifier.set("javadoc")
             }
-            groupId "io.github.barvin"
+            groupId group
             artifactId project.name
             version releaseVersion
             pom.withXml {
