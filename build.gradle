@@ -107,6 +107,6 @@ bintray {
 
 dependencies {
     implementation 'ch.qos.logback:logback-classic:1.2.3'
-    implementation 'io.github.barvin:report-portal-client:4.0.6'
+    implementation 'io.github.barvin:report-portal-client:4.0.7'
     implementation 'com.google.guava:guava:23.0'
 }
